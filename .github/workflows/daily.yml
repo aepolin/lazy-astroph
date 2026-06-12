@@ -1,0 +1,26 @@
+name: Daily arXiv Papers
+
+on:
+  schedule:
+    - cron: '0 10 * * 1-5'  # 10am UTC weekdays
+  workflow_dispatch:
+
+jobs:
+  fetch-papers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install feedparser requests
+
+      - name: Write webhook to file
+        run: echo "${{ secrets.SLACK_WEBHOOK_URL }}" > webhook.txt
+
+      - name: Run lazy-astroph
+        run: python lazy_astroph.py -w webhook.txt inputs
