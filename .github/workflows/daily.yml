@@ -2,7 +2,7 @@ name: Daily arXiv Papers
 
 on:
   schedule:
-    - cron: '0 10 * * *'  # every day
+    - cron: '0 10 * * 1-5'  # weekdays only
   workflow_dispatch:
 
 jobs:
