@@ -196,7 +196,7 @@ class AstrophQuery:
                         keys_matched[k.channel].append(k.name)
 
             if keys_matched:
-                results.append(Paper(arxiv_id, title, lead_author=lead_author, url, dict(keys_matched)))
+                results.append(Paper(arxiv_id, title, url, dict(keys_matched), lead_author=lead_author))
 
         return results, latest_id
 
