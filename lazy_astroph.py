@@ -12,6 +12,7 @@ import subprocess
 import sys
 from collections import defaultdict
 from email.mime.text import MIMEText
+import requests
 
 import feedparser
 
@@ -306,8 +307,10 @@ def slack_post(papers, channel_req, username=None, icon_emoji=None, webhook=None
             payload["icon_emoji"] = icon_emoji
         payload["text"] = channel_body
 
-        cmd = f"curl -X POST --data-urlencode 'payload={json.dumps(payload)}' {webhook}"
-        run(cmd)
+        requests.post(webhook, json=payload)
+
+        #cmd = f"curl -X POST --data-urlencode 'payload={json.dumps(payload)}' {webhook}"
+        #run(cmd)
 
 def doit():
     """ the main driver for the lazy-astroph script """
