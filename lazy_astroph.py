@@ -28,10 +28,11 @@ class Paper:
        which keywords it matched and which Slack channel it should go
        to"""
 
-    def __init__(self, arxiv_id, title, url, keywords_by_channel):
+    def __init__(self, arxiv_id, title, url, keywords_by_channel, lead_author=None):
         self.arxiv_id = arxiv_id
         self.title = title.replace("'", r"")
         self.url = url
+        self.lead_author = lead_author
         self.keywords_by_channel = keywords_by_channel
         self.keywords = []
         for kws in keywords_by_channel.values():
@@ -143,6 +144,7 @@ class AstrophQuery:
 
             arxiv_id = e.id.split("/abs/")[-1]
             title = e.title.replace("\n", " ")
+            lead_author = e.contributors[0].get("name", "") if e.contributors else ""
 
             # the papers are sorted now such that the first is the
             # most recent -- we want to store this id, so the next
@@ -194,7 +196,7 @@ class AstrophQuery:
                         keys_matched[k.channel].append(k.name)
 
             if keys_matched:
-                results.append(Paper(arxiv_id, title, url, dict(keys_matched)))
+                results.append(Paper(arxiv_id, title, lead_author=lead_author, url, dict(keys_matched)))
 
         return results, latest_id
 
@@ -289,7 +291,7 @@ def slack_post(papers, channel_req, username=None, icon_emoji=None, webhook=None
                 if c in p.keywords_by_channel:
                     if len(p.keywords_by_channel[c]) >= channel_req[c]:
                         keywds = ", ".join(p.keywords).strip()
-                        channel_body += f"{p} [{keywds}]\n\n"
+                        channel_body += f"{p} {p.lead_author} [{keywds}]\n\n"
                         p.posted_to_slack = 1
 
         if webhook is None:
