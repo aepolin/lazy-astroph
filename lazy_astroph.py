@@ -379,7 +379,7 @@ def doit():
 
     # have we done this before? if so, read the .lazy_astroph file to get
     # the id of the paper we left off with
-    param_file = os.path.expanduser("~") + "/.lazy_astroph"
+    param_file = ".lazy_astroph"
     try:
         f = open(param_file)
     except:
