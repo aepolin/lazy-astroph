@@ -34,4 +34,4 @@ jobs:
           git config user.email "github-actions@github.com"
           git add .lazy_astroph
           git diff --staged --quiet || git commit -m "update last paper ID"
-          git push
+          git push || true
