@@ -2,8 +2,11 @@ name: Daily arXiv Papers
 
 on:
   schedule:
-    - cron: '0 10 * * 1-5'  # weekdays only
+    - cron: '0 12 * * 1-5'  # weekdays only should be 8am eastern
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   fetch-papers:
